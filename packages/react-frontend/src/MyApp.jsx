@@ -24,16 +24,21 @@ const charsArr = [
 
 function MyApp(){
     const [chars, setChars] = useState(charsArr);
+
     function removeOneChar(index) {
-        const updated = chars.filter((character, i) => {
-            return i !== index;
-            });
-            setChars(updated);
+      const updated = chars.filter((character, i) => {
+          return i !== index;
+          });
+          setChars(updated);
     }
+    function appendChar(person) {
+      setChars([...chars, person])
+    }
+
     return (
     <div className="container">
       <Table charData={chars} removeChar={removeOneChar}/>
-      <Form />
+      <Form handleSubmit={appendChar}/>
     </div>
     )
 }
