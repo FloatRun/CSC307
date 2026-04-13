@@ -12,6 +12,12 @@ app.get("/", (req, res) => {
 
 app.get("/users", (req, res) => {
     const name = req.query.name;
+    const job = req.query.job;
+    if (job != undefined && name != undefined) {
+        let result = users.users_list.filter((user) => user.job === job && user.name === name)
+        result = { users_list: result}
+        res.send(result)
+    }
     if (name != undefined) {
         let result = findUserByName(name);
         result = { users_list: result}
@@ -33,6 +39,29 @@ app.get("/users/:id", (req, res) => {
     }
 })
 
+app.post("/users", (req, res) => {
+    const user = req.body
+    let addedUser = addUser(user)
+    res.send(user)
+})
+
+const removeUserById = ((id) => {
+    users.users_list = users.users_list.filter((user) => user.id != id)
+    return id
+})
+
+app.delete("/users/:id", (req, res) => {
+    const id = req.params.id
+    let result = findUserById(id)
+    if (result === undefined) {
+        res.status(404).send("Bad Id")
+    }
+    else {
+        removeUserById(id)
+        res.send(id)
+    }
+})
+
 app.listen(port, () => {
     console.log(`Example app listening on http://localhost:${port}`);
 })
@@ -43,6 +72,11 @@ const findUserById = (id) => {
 
 const findUserByName = (name) => {
     return users.users_list.filter((user) => user.name === name);
+}
+
+const addUser = (user) => {
+    users.users_list.push(user)
+    return user
 }
 
 const users = {
