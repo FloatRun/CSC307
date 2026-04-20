@@ -60,7 +60,7 @@ app.delete("/users/:id", (req, res) => {
     }
     else {
         removeUserById(id)
-        res.send(id)
+        res.status(204).send(id)
     }
 })
 

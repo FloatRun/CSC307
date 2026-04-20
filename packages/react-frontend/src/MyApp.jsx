@@ -31,10 +31,25 @@ function MyApp(){
     const [chars, setChars] = useState(charsArr);
 
     function removeOneChar(index) {
-      const updated = chars.filter((character, i) => {
-          return i !== index;
+      const charToRemove = chars[index]
+      fetch(`http://localhost:8000/users/${charToRemove.id}`, {
+        method: "DELETE",
+      })
+        .then((result) => {
+          if (result.status !== 204) {
+            if (result.status === 404) {
+              throw new Error(`User with id ${charToRemove.id} not found`)
+            }
+            throw new Error(`Expected 204, got ${result.status}`)
+          }
+          const updated = chars.filter((character, i) => {
+            return i !== index;
           });
           setChars(updated);
+        })
+        .catch((error) => {
+          console.log(error)
+        })
     }
     function appendChar(person) {
       postUser(person)
