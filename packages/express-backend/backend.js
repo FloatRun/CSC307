@@ -1,9 +1,11 @@
 import express from 'express'; // ES module (async), uses CommonJS by default (sync)
+import cors from "cors";
 // CommonJS would be more like require('express');
 
 const app = express();
 const port = 8000;
 
+app.use(cors()); // adds 'Access-Control-Allow-Origin' header to any response at all
 app.use(express.json()); // set up express to parse incoming data in JSON
 
 app.get("/", (req, res) => {

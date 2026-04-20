@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import Table from "./Table"
 import Form from "./Form"
 
@@ -21,6 +21,11 @@ const charsArr = [
   }
 ];
 
+function fetchUsers() {
+  const promise = fetch("http://localhost:8000/users")
+  return promise
+}
+
 
 function MyApp(){
     const [chars, setChars] = useState(charsArr);
@@ -34,6 +39,16 @@ function MyApp(){
     function appendChar(person) {
       setChars([...chars, person])
     }
+
+    useEffect(() => {
+      fetchUsers()
+      .then((res) => res.json())
+      .then((json) => setChars(json["users_list"]))
+      .catch((error) => {
+        console.log(error)
+      }),
+      []
+    })
 
     return (
     <div className="container">
