@@ -44,7 +44,7 @@ app.get("/users/:id", (req, res) => {
 app.post("/users", (req, res) => {
     const user = req.body
     let addedUser = addUser(user)
-    res.send(user)
+    res.status(201).send(addedUser)
 })
 
 const removeUserById = ((id) => {
@@ -77,6 +77,8 @@ const findUserByName = (name) => {
 }
 
 const addUser = (user) => {
+    let rand_id = Math.random()
+    user["id"] = rand_id.toString()
     users.users_list.push(user)
     return user
 }

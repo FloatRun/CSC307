@@ -38,8 +38,14 @@ function MyApp(){
     }
     function appendChar(person) {
       postUser(person)
-        .then(() => {
-          setChars([...chars, person]) // sort of manual change based on state
+        .then((result) => {
+          if (result.status !== 201) {
+            throw new Error(`Expected 201, got ${result.status}`)
+          }
+          return result.json() // sort of manual change based on state
+        })
+        .then((json) => {
+          setChars([...chars, json])
         })
         .catch((error) => {
           console.log(error)
@@ -64,9 +70,9 @@ function MyApp(){
       .then((json) => setChars(json["users_list"]))
       .catch((error) => {
         console.log(error)
-      }),
+      })},
       []
-    })
+    )
 
     return (
     <div className="container">
