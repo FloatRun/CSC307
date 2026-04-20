@@ -37,7 +37,25 @@ function MyApp(){
           setChars(updated);
     }
     function appendChar(person) {
-      setChars([...chars, person])
+      postUser(person)
+        .then(() => {
+          setChars([...chars, person]) // sort of manual change based on state
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    }
+
+    function postUser(person) {
+      const promise = fetch("http://localhost:8000/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(person),
+      })
+
+      return promise
     }
 
     useEffect(() => {
