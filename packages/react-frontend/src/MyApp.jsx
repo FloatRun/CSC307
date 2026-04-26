@@ -22,8 +22,7 @@ const charsArr = [
 ];
 
 function fetchUsers() {
-  const promise = fetch("http://localhost:8000/users")
-  return promise
+  return fetch(`http://localhost:8000/users${window.location.search}`)
 }
 
 
@@ -32,7 +31,7 @@ function MyApp(){
 
     function removeOneChar(index) {
       const charToRemove = chars[index]
-      fetch(`http://localhost:8000/users/${charToRemove.id}`, {
+      fetch(`http://localhost:8000/users/${charToRemove._id}`, {
         method: "DELETE",
       })
         .then((result) => {
